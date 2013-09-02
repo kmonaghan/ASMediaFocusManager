@@ -90,7 +90,7 @@ static CGFloat const kAnimationDuration = 0.5;
         if(self.isDefocusingWithTap)
         {
             UITapGestureRecognizer *tapGesture;
-
+            
             tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDefocusGesture:)];
             [focusViewController.view addGestureRecognizer:tapGesture];
         }
@@ -109,7 +109,7 @@ static CGFloat const kAnimationDuration = 0.5;
     image = [self.delegate mediaFocusManager:self imageForView:mediaView];
     if(image == nil)
         return nil;
-
+    
     viewController = [[ASMediaFocusController alloc] initWithNibName:nil bundle:nil];
     [self installDefocusActionOnFocusViewController:viewController];
     viewController.titleLabel.text = [self.delegate mediaFocusManager:self titleForView:mediaView];
@@ -120,24 +120,35 @@ static CGFloat const kAnimationDuration = 0.5;
         NSData *data;
         NSError *error = nil;
         
+        UIImage *image;
+        
         url = [self.delegate mediaFocusManager:self mediaURLForView:mediaView];
-        data = [NSData dataWithContentsOfURL:url options:0 error:&error];
-        if(error != nil)
+        if (url)
         {
-            NSLog(@"Warning: Unable to load image at %@. %@", url, error);
+            data = [NSData dataWithContentsOfURL:url options:0 error:&error];
+            if(error != nil)
+            {
+                NSLog(@"Warning: Unable to load image at %@. %@", url, error);
+            }
+            else
+            {
+                image = [[UIImage alloc] initWithData:data];
+                image = [self decodedImageWithImage:image];
+            }
         }
         else
         {
-            UIImage *image;
-
-            image = [[UIImage alloc] initWithData:data];
-            image = [self decodedImageWithImage:image];
+            image = [self.delegate mediaFocusManager:self fullImageForView:mediaView];
+        }
+        
+        if (image)
+        {
             dispatch_async(dispatch_get_main_queue(), ^{
                 viewController.mainImageView.image = image;
             });
         }
     });
-
+    
     return viewController;
 }
 
@@ -220,7 +231,7 @@ static CGFloat const kAnimationDuration = 0.5;
     imageView.center = center;
     imageView.transform = mediaView.transform;
     imageView.bounds = mediaView.bounds;
-        
+    
     self.isZooming = YES;
     
     [UIView animateWithDuration:self.animationDuration
@@ -231,7 +242,7 @@ static CGFloat const kAnimationDuration = 0.5;
                          
                          frame = [self.delegate mediaFocusManager:self finalFrameforView:mediaView];
                          frame = (self.elasticAnimation?[self rectInsetsForRect:frame ratio:-kAnimateElasticSizeRatio]:frame);
-
+                         
                          // Trick to keep the right animation on the image frame.
                          // The image frame shoud animate from its current frame to a final frame.
                          // The final frame is computed by taking care of a possible rotation regarding the current device orientation, done by calling updateOrientationAnimated.
@@ -249,7 +260,7 @@ static CGFloat const kAnimationDuration = 0.5;
                          imageView.frame = initialFrame;
                          imageView.transform = initialTransform;
                          imageView.transform = CGAffineTransformIdentity;
-                         imageView.frame = frame;                         
+                         imageView.frame = frame;
                          focusViewController.view.backgroundColor = self.backgroundColor;
                      }
                      completion:^(BOOL finished) {
