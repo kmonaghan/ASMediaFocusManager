@@ -186,12 +186,14 @@ static CGFloat const kAnimationDuration = 0.5;
     doneButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [doneButton setTitle:NSLocalizedString(@"Done", @"Done") forState:UIControlStateNormal];
     [doneButton addTarget:self action:@selector(handleDefocusGesture:) forControlEvents:UIControlEventTouchUpInside];
-    doneButton.backgroundColor = [UIColor colorWithWhite:0 alpha:0.5];
+    //doneButton.backgroundColor = [UIColor colorWithWhite:0 alpha:0.5];
     [doneButton sizeToFit];
+    
     doneButton.frame = CGRectInset(doneButton.frame, -20, -4);
     doneButton.layer.borderWidth = 2;
     doneButton.layer.cornerRadius = 4;
     doneButton.layer.borderColor = [UIColor whiteColor].CGColor;
+     
     doneButton.center = CGPointMake(focusViewController.contentView.bounds.size.width - doneButton.bounds.size.width/2 - 10, doneButton.bounds.size.height/2 + 10);
     doneButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin;
     [focusViewController.contentView addSubview:doneButton];
@@ -202,6 +204,30 @@ static CGFloat const kAnimationDuration = 0.5;
                      animations:^{
                          doneButton.alpha = 1;
                      }];
+    
+    if ([self.delegate respondsToSelector:@selector(shareImage)])
+    {
+        UIButton *shareButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [shareButton setTitle:NSLocalizedString(@"Share", @"Share") forState:UIControlStateNormal];
+        [shareButton addTarget:self.delegate action:@selector(shareImage) forControlEvents:UIControlEventTouchUpInside];
+        [shareButton sizeToFit];
+        
+        shareButton.center = CGPointMake(10.0f + shareButton.bounds.size.width/2, focusViewController.contentView.bounds.size.height - shareButton.bounds.size.height/2 - 10);
+        shareButton.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin;
+        [focusViewController.contentView addSubview:shareButton];
+    }
+    
+    if ([self.delegate respondsToSelector:@selector(deleteImage)])
+    {
+        UIButton *deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [deleteButton setTitle:NSLocalizedString(@"Delete", @"Delete") forState:UIControlStateNormal];
+        [deleteButton addTarget:self.delegate action:@selector(deleteImage) forControlEvents:UIControlEventTouchUpInside];
+        [deleteButton sizeToFit];
+        
+        deleteButton.center = CGPointMake(focusViewController.contentView.bounds.size.width - deleteButton.bounds.size.width/2 - 10, focusViewController.contentView.bounds.size.height - deleteButton.bounds.size.height/2 - 10);
+        deleteButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin;
+        [focusViewController.contentView addSubview:deleteButton];
+    }
 }
 
 #pragma mark - Gestures

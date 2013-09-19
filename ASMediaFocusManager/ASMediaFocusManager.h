@@ -23,6 +23,9 @@
 // Returns the title for this media view. Return nil if you don't want any title to appear.
 - (NSString *)mediaFocusManager:(ASMediaFocusManager *)mediaFocusManager titleForView:(UIView *)view;
 - (UIImage *)mediaFocusManager:(ASMediaFocusManager *)mediaFocusManager fullImageForView:(UIView *)view;
+@optional
+- (void)shareImage;
+- (void)deleteImage;
 @end
 
 

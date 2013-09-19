@@ -119,6 +119,16 @@ static CGFloat const kMaxOffset = 20;
     return @"Of course, you can zoom in and out on the image.";
 }
 
+- (void)shareImage
+{
+    NSLog(@"Would share image");
+}
+
+- (void)deleteImage
+{
+    NSLog(@"Would delete the image");
+}
+
 #pragma mark - UITableViewDataSource
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
