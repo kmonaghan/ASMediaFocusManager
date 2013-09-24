@@ -129,6 +129,12 @@ static CGFloat const kMaxOffset = 20;
     NSLog(@"Would delete the image");
 }
 
+- (void)didDismissView
+{
+    NSLog(@"The view has been dismissed");
+
+}
+
 #pragma mark - UITableViewDataSource
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {

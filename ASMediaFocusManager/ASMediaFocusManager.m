@@ -344,6 +344,11 @@ static CGFloat const kAnimationDuration = 0.5;
                                               [self.focusViewController.view removeFromSuperview];
                                               [self.focusViewController removeFromParentViewController];
                                               self.focusViewController = nil;
+                                              
+                                              if (self.delegate && [self.delegate respondsToSelector:@selector(didDismissView)])
+                                              {
+                                                  [self.delegate didDismissView];
+                                              }
                                           }];
                      }];
 }

@@ -22,10 +22,16 @@
 - (NSURL *)mediaFocusManager:(ASMediaFocusManager *)mediaFocusManager mediaURLForView:(UIView *)view;
 // Returns the title for this media view. Return nil if you don't want any title to appear.
 - (NSString *)mediaFocusManager:(ASMediaFocusManager *)mediaFocusManager titleForView:(UIView *)view;
+
 - (UIImage *)mediaFocusManager:(ASMediaFocusManager *)mediaFocusManager fullImageForView:(UIView *)view;
 @optional
 - (void)shareImage;
+
 - (void)deleteImage;
+
+//Called when the view has be dismissed by the 'done' button or by gesture.
+- (void)didDismissView;
+
 @end
 
 
